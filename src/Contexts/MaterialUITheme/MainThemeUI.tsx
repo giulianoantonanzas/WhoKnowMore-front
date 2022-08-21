@@ -10,7 +10,6 @@ export const theme = createTheme({
   },
   components: {
     MuiBackdrop: {
-      //background del modal
       styleOverrides: {
         root: {
           background: "rgb(0 0 0/20%) !important",
@@ -18,7 +17,6 @@ export const theme = createTheme({
       },
     },
     MuiPaper: {
-      //modal
       styleOverrides: {
         root: {
           background: "none !important",
@@ -42,6 +40,36 @@ export const theme = createTheme({
         root: {
           textTransform: "none",
           borderRadius: "10px",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& legend": {
+            width: "0",
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      defaultProps: {
+        shrink: true,
+      },
+      styleOverrides: {
+        formControl: {
+          position: "relative",
+        },
+        root: {
+          transform: "unset !important",
+          padding: "0 0.2rem",
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          gap: "4px",
         },
       },
     },

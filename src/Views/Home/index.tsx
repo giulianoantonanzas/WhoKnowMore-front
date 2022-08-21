@@ -6,8 +6,15 @@ import useStyles from "./useStyles";
 
 const Home = () => {
   const { content, buttonBox, modalContent } = useStyles();
-  const { IterateCreateModal, openCreateModal } = useCreateRoom();
-  const { IterateJoinModal, openJoinModal } = useJoinRoom();
+  const { IterateCreateModal, openCreateModal, loadingCreateRoom, roomCode } =
+    useCreateRoom();
+  const {
+    IterateJoinModal,
+    openJoinModal,
+    handleChangeCode,
+    submit,
+    isConnected,
+  } = useJoinRoom();
 
   const hasDisableButton = openCreateModal || openJoinModal;
 
@@ -45,11 +52,12 @@ const Home = () => {
 
       <Dialog open={openCreateModal} onClose={IterateCreateModal}>
         <Box className={modalContent}>
-          <Typography variant="h4">RoomCreated</Typography>
-          <Typography>Code: 12313131</Typography>
+          <Typography variant="h4">Room Created</Typography>
+          <Typography>Code: {roomCode}</Typography>
           <Button
             onClick={IterateCreateModal}
             variant="outlined"
+            disabled={loadingCreateRoom}
             color="primary"
           >
             Retroceder
@@ -61,12 +69,19 @@ const Home = () => {
         <Box className={modalContent}>
           <Typography variant="h4">Join room</Typography>
           <TextField
+            onChange={handleChangeCode}
             label="Room code"
             fullWidth
             type={"text"}
             placeholder="abll7k582mx2k"
           />
-          <Button variant="contained" fullWidth color="primary">
+          <Button
+            variant="contained"
+            disabled={!isConnected}
+            onClick={submit}
+            fullWidth
+            color="primary"
+          >
             Unirse a una sala
           </Button>
         </Box>
