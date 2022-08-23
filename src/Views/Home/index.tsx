@@ -1,38 +1,37 @@
 import { Button, Dialog, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import useCreateRoom from "./useCreateRoom";
+import useHome from "./useHome";
 import useJoinRoom from "./useJoinRoom";
 import useStyles from "./useStyles";
 
 const Home = () => {
-  const { content, buttonBox, modalContent } = useStyles();
-  const { IterateCreateModal, openCreateModal, loadingCreateRoom, roomCode } =
-    useCreateRoom();
-  const {
-    IterateJoinModal,
-    openJoinModal,
-    handleChangeCode,
-    submit,
-    isConnected,
-  } = useJoinRoom();
+  const style = useStyles();
+  const { handleChangeName, disableButtons, name } = useHome();
+  const { iterateCreateModal, openCreateModal, loadingCreateRoom, roomCode } =
+    useCreateRoom(name);
+  const { iterateJoinModal, openJoinModal, handleChangeCode, submit } =
+    useJoinRoom(name);
 
-  const hasDisableButton = openCreateModal || openJoinModal;
+  const hasDisableButton = openCreateModal || openJoinModal || disableButtons;
 
   return (
     <Box>
-      <Box className={content}>
+      <Box className={style.content}>
         <TextField
           label="Nombre o apodo"
           fullWidth
+          focused={true}
+          onChange={handleChangeName}
           type={"text"}
           placeholder="Giuliano"
         />
 
-        <Box className={buttonBox}>
+        <Box className={style.buttonBox}>
           <Button
             disabled={hasDisableButton}
             variant="contained"
-            onClick={IterateCreateModal}
+            onClick={iterateCreateModal}
             fullWidth
             color="primary"
           >
@@ -40,7 +39,7 @@ const Home = () => {
           </Button>
           <Button
             disabled={hasDisableButton}
-            onClick={IterateJoinModal}
+            onClick={iterateJoinModal}
             variant="contained"
             fullWidth
             color="primary"
@@ -50,12 +49,12 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Dialog open={openCreateModal} onClose={IterateCreateModal}>
-        <Box className={modalContent}>
+      <Dialog open={openCreateModal} onClose={iterateCreateModal}>
+        <Box className={style.modalContent}>
           <Typography variant="h4">Room Created</Typography>
           <Typography>Code: {roomCode}</Typography>
           <Button
-            onClick={IterateCreateModal}
+            onClick={iterateCreateModal}
             variant="outlined"
             disabled={loadingCreateRoom}
             color="primary"
@@ -65,8 +64,8 @@ const Home = () => {
         </Box>
       </Dialog>
 
-      <Dialog open={openJoinModal} onClose={IterateJoinModal}>
-        <Box className={modalContent}>
+      <Dialog open={openJoinModal} onClose={iterateJoinModal}>
+        <Box className={style.modalContent}>
           <Typography variant="h4">Join room</Typography>
           <TextField
             onChange={handleChangeCode}
@@ -77,7 +76,6 @@ const Home = () => {
           />
           <Button
             variant="contained"
-            disabled={!isConnected}
             onClick={submit}
             fullWidth
             color="primary"

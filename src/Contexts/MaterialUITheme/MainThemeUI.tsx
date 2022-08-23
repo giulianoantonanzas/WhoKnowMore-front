@@ -49,6 +49,9 @@ export const theme = createTheme({
           "& legend": {
             width: "0",
           },
+          "& input": {
+            background: "#ffffff",
+          },
         },
       },
     },

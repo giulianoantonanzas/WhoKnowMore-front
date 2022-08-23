@@ -1,56 +1,59 @@
+import useGame from "Contexts/GameContext";
+import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type CreateRoomCode = {
   eventName: "createRoom";
   createdRoomId: string;
-  message: string;
+  data: { createdRoomId: string };
 };
 
-const useCreateRoom = () => {
-  const [isConnected, setIsConnected] = useState(false);
+const useCreateRoom = (name: string) => {
   const [loadingCreateRoom, setLoadingCreateRoom] = useState<boolean>();
   const [roomCode, setRoomCode] = useState<string>();
   const [openCreateModal, setOpenCreateModal] = useState(false);
+  const { handleConnect, event, sendEvent, isConnected } = useSocket();
+  const { handleAddPlayerCreator, handleSetRoomCode } = useGame();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (openCreateModal) {
-      const webSocket = new WebSocket(
-        "wss://xv54lcahc9.execute-api.us-east-1.amazonaws.com/dev"
-      );
-      webSocket.onopen = () => {
-        setIsConnected(true);
-        setLoadingCreateRoom(true);
-        webSocket.send(
-          JSON.stringify({
-            action: "createRoom",
-          })
-        );
-      };
-      webSocket.onmessage = (e) => {
-        console.log("onmessage", e);
-        const result = JSON.parse(e.data as string) as CreateRoomCode;
-        if (result.eventName === "createRoom") {
-          setRoomCode(
-            (JSON.parse(e.data as string) as CreateRoomCode).createdRoomId
-          );
-          setLoadingCreateRoom(false);
-        } else {
-          alert(result.message);
-        }
-      };
-      webSocket.onerror = (e) => {
-        console.log("error", e);
-      };
+      handleConnect();
     }
   }, [openCreateModal]);
 
-  const IterateCreateModal = () => {
+  useEffect(() => {
+    if (isConnected) {
+      setLoadingCreateRoom(true);
+      sendEvent(
+        JSON.stringify({
+          action: "CreateRoom",
+          name,
+        })
+      );
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (event?.eventName === "CreateRoom") {
+      const currentEvent = event.data as CreateRoomCode;
+      setLoadingCreateRoom(false);
+      handleSetRoomCode(currentEvent.createdRoomId);
+      setRoomCode(currentEvent.createdRoomId);
+      handleAddPlayerCreator({ name });
+    } else if (event?.eventName === "MemberJoin") {
+      navigate("/questions");
+    }
+  }, [event]);
+
+  const iterateCreateModal = () => {
     setOpenCreateModal((prev) => !prev);
   };
 
   return {
     openCreateModal,
-    IterateCreateModal,
+    iterateCreateModal,
     loadingCreateRoom,
     isConnected,
     roomCode,

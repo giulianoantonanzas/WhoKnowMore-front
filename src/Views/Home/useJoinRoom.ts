@@ -1,40 +1,23 @@
+import useGame from "Contexts/GameContext";
+import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-type JoinRoomResult = {
-  eventName: "JoinRoom";
-  eventResult: "failed" | "success";
-  message: string;
-};
-
-const useJoinRoom = () => {
+const useJoinRoom = (name: string) => {
   const [openJoinModal, setOpenJoinModal] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [loadingJoinRoom, setLoadingJoinRoom] = useState<boolean>();
   const [roomCode, setRoomCode] = useState<string>();
-  const [socket, setSocket] = useState<WebSocket>();
+  const { handleConnect, sendEvent, event } = useSocket();
+  const { handleAddPlayerInvite } = useGame();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (openJoinModal) {
-      const webSocket = new WebSocket(
-        "wss://xv54lcahc9.execute-api.us-east-1.amazonaws.com/dev"
-      );
-      webSocket.onopen = () => {
-        setIsConnected(true);
-      };
-      setSocket(webSocket);
-      webSocket.onmessage = (e) => {
-        console.log(e);
-        const result = JSON.parse(e.data as string) as JoinRoomResult;
-        if (result) alert(result.message);
-        setLoadingJoinRoom(false);
-      };
-      webSocket.onerror = (e) => {
-        console.log("error", e);
-      };
+      handleConnect();
     }
   }, [openJoinModal]);
 
-  const IterateJoinModal = () => {
+  const iterateJoinModal = () => {
     setOpenJoinModal((prev) => !prev);
   };
 
@@ -42,25 +25,31 @@ const useJoinRoom = () => {
     setRoomCode(e.target.value);
   };
 
-  const submit = () => {
-    if (socket) {
-      setLoadingJoinRoom(true);
-      socket.send(
-        JSON.stringify({
-          action: "joinRoom",
-          roomCode,
-        })
-      );
+  useEffect(() => {
+    if (event?.eventName === "JoinRoom") {
+      handleAddPlayerInvite({ name });
+      setLoadingJoinRoom(false);
+      navigate("/questions");
     }
+  }, [event]);
+
+  const submit = () => {
+    setLoadingJoinRoom(true);
+    sendEvent(
+      JSON.stringify({
+        action: "JoinRoom",
+        roomCode,
+        name,
+      })
+    );
   };
 
   return {
     openJoinModal,
-    IterateJoinModal,
+    iterateJoinModal,
     loadingJoinRoom,
     handleChangeCode,
     submit,
-    isConnected,
   };
 };
 
