@@ -1,4 +1,4 @@
-import BlankLayout from "Layouts/BlankLayout";
+import GameLyout from "Layouts/GameLyout";
 import PlayerLayout from "Layouts/FirtStepLayout";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -12,7 +12,7 @@ const RootNavigator: React.FC = () => {
         <Route element={<PlayerLayout />}>
           <Route path="/" element={<Home />} />
         </Route>
-        <Route element={<BlankLayout />}>
+        <Route element={<GameLyout />}>
           <Route path="/questions" element={<PrepareQuestions />} />
         </Route>
       </Routes>

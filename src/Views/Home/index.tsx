@@ -1,5 +1,13 @@
-import { Button, Dialog, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  Skeleton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
+import RoundedBox from "Components/RoundedBox";
 import useCreateRoom from "./useCreateRoom";
 import useHome from "./useHome";
 import useJoinRoom from "./useJoinRoom";
@@ -10,53 +18,64 @@ const Home = () => {
   const { handleChangeName, disableButtons, name } = useHome();
   const { iterateCreateModal, openCreateModal, loadingCreateRoom, roomCode } =
     useCreateRoom(name);
-  const { iterateJoinModal, openJoinModal, handleChangeCode, submit } =
-    useJoinRoom(name);
+  const {
+    iterateJoinModal,
+    openJoinModal,
+    handleChangeCode,
+    submit,
+    loadingJoinRoom,
+    error,
+  } = useJoinRoom(name);
 
   const hasDisableButton = openCreateModal || openJoinModal || disableButtons;
 
   return (
     <Box>
-      <Box className={style.content}>
-        <TextField
-          label="Nombre o apodo"
-          fullWidth
-          focused={true}
-          onChange={handleChangeName}
-          type={"text"}
-          placeholder="Giuliano"
-        />
+      <RoundedBox>
+        <Box className={style.content}>
+          <TextField
+            label="Nombre o apodo"
+            fullWidth
+            focused={true}
+            onChange={handleChangeName}
+            type={"text"}
+            placeholder="Giuliano"
+          />
 
-        <Box className={style.buttonBox}>
-          <Button
-            disabled={hasDisableButton}
-            variant="contained"
-            onClick={iterateCreateModal}
-            fullWidth
-            color="primary"
-          >
-            Crear nueva sala
-          </Button>
-          <Button
-            disabled={hasDisableButton}
-            onClick={iterateJoinModal}
-            variant="contained"
-            fullWidth
-            color="primary"
-          >
-            Unirse a una sala
-          </Button>
+          <Box className={style.buttonBox}>
+            <Button
+              disabled={hasDisableButton}
+              variant="contained"
+              onClick={iterateCreateModal}
+              fullWidth
+              color="primary"
+            >
+              Crear nueva sala
+            </Button>
+            <Button
+              disabled={hasDisableButton}
+              onClick={iterateJoinModal}
+              variant="contained"
+              fullWidth
+              color="primary"
+            >
+              Unirse a una sala
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </RoundedBox>
 
       <Dialog open={openCreateModal} onClose={iterateCreateModal}>
         <Box className={style.modalContent}>
           <Typography variant="h4">Room Created</Typography>
-          <Typography>Code: {roomCode}</Typography>
+          <Typography display={"flex"} gap={"1rem"}>
+            Code: {loadingCreateRoom && <Skeleton width={"100%"} />}
+            {roomCode}
+          </Typography>
+
           <Button
             onClick={iterateCreateModal}
             variant="outlined"
-            disabled={loadingCreateRoom}
             color="primary"
           >
             Retroceder
@@ -68,6 +87,8 @@ const Home = () => {
         <Box className={style.modalContent}>
           <Typography variant="h4">Join room</Typography>
           <TextField
+            error={Boolean(error)}
+            helperText={error}
             onChange={handleChangeCode}
             label="Room code"
             fullWidth
@@ -78,9 +99,10 @@ const Home = () => {
             variant="contained"
             onClick={submit}
             fullWidth
+            disabled={loadingJoinRoom}
             color="primary"
           >
-            Unirse a una sala
+            {loadingJoinRoom ? <CircularProgress /> : "Unirse a una sala"}
           </Button>
         </Box>
       </Dialog>

@@ -6,6 +6,7 @@ export type SocketContext = {
   sendEvent: (data: string) => void;
   event?: WhoKnowMoreEvent;
   isConnected: boolean;
+  handleDisconect: () => void;
 };
 const useSocket = () => {
   return useContext(SocketContext);
@@ -15,6 +16,7 @@ export const SocketContext = React.createContext<SocketContext>({
   handleConnect: () => {},
   sendEvent: (_data: string) => {},
   isConnected: false,
+  handleDisconect: () => {},
 });
 
 export const SocketContextProvider: React.FC<{
@@ -30,6 +32,12 @@ export const SocketContextProvider: React.FC<{
       new WebSocket("wss://xv54lcahc9.execute-api.us-east-1.amazonaws.com/dev")
     );
     setHasInitialice(true);
+  };
+
+  const handleDisconect = () => {
+    if (webSocket) {
+      webSocket.send(JSON.stringify({ action: "$disconnect" }));
+    }
   };
 
   useEffect(() => {
@@ -65,6 +73,7 @@ export const SocketContextProvider: React.FC<{
     <SocketContext.Provider
       value={{
         handleConnect,
+        handleDisconect,
         sendEvent,
         event,
         isConnected,

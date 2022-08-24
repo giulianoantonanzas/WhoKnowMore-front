@@ -8,6 +8,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
     top: 0,
     background: variables.blackBackground,
   },

@@ -15,8 +15,8 @@ const useGame = () => {
 };
 
 export const GameContext = React.createContext<GameContextType>({
-  playerCreator: { name: "" },
-  playerInvited: { name: "" },
+  playerCreator: { name: "", selected: false },
+  playerInvited: { name: "", selected: false },
   roomCode: "",
   handleAddPlayerCreator: (_player: Player) => {},
   handleAddPlayerInvite: (_player: Player) => {},
@@ -26,8 +26,14 @@ export const GameContext = React.createContext<GameContextType>({
 export const GameContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [playerCreator, setPlayerCreator] = useState<Player>({ name: "" });
-  const [playerInvited, setPlayerInvited] = useState<Player>({ name: "" });
+  const [playerCreator, setPlayerCreator] = useState<Player>({
+    name: "",
+    selected: false,
+  });
+  const [playerInvited, setPlayerInvited] = useState<Player>({
+    name: "",
+    selected: false,
+  });
   const [roomCode, setRoomCode] = useState("");
 
   const handleAddPlayerCreator = (data: Player) => {

@@ -50,7 +50,7 @@ export const theme = createTheme({
             width: "0",
           },
           "& input": {
-            background: "#ffffff",
+            background: variables.white,
           },
         },
       },

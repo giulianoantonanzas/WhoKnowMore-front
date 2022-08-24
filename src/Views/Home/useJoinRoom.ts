@@ -3,12 +3,20 @@ import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+type JoinRoomEvent = {
+  creatorName: string;
+  message: string;
+  roomId: string;
+};
+
 const useJoinRoom = (name: string) => {
   const [openJoinModal, setOpenJoinModal] = useState(false);
   const [loadingJoinRoom, setLoadingJoinRoom] = useState<boolean>();
   const [roomCode, setRoomCode] = useState<string>();
+  const [error, setError] = useState<string>();
   const { handleConnect, sendEvent, event } = useSocket();
-  const { handleAddPlayerInvite } = useGame();
+  const { handleAddPlayerInvite, handleAddPlayerCreator, handleSetRoomCode } =
+    useGame();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +27,7 @@ const useJoinRoom = (name: string) => {
 
   const iterateJoinModal = () => {
     setOpenJoinModal((prev) => !prev);
+    setError(undefined);
   };
 
   const handleChangeCode = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,13 +36,24 @@ const useJoinRoom = (name: string) => {
 
   useEffect(() => {
     if (event?.eventName === "JoinRoom") {
-      handleAddPlayerInvite({ name });
+      if (event.eventResult === "success") {
+        const currentEvent = event.data as JoinRoomEvent;
+        handleSetRoomCode(currentEvent.roomId);
+        handleAddPlayerInvite({ name, selected: true });
+        handleAddPlayerCreator({
+          name: currentEvent.creatorName,
+          selected: false,
+        });
+        navigate("/questions");
+      } else {
+        setError(event.data.message as string);
+      }
       setLoadingJoinRoom(false);
-      navigate("/questions");
     }
   }, [event]);
 
   const submit = () => {
+    setError(undefined);
     setLoadingJoinRoom(true);
     sendEvent(
       JSON.stringify({
@@ -50,6 +70,7 @@ const useJoinRoom = (name: string) => {
     loadingJoinRoom,
     handleChangeCode,
     submit,
+    error,
   };
 };
 

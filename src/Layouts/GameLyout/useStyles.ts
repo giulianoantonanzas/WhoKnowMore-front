@@ -3,33 +3,30 @@ import { theme } from "Contexts/MaterialUITheme/MainThemeUI";
 import variables from "Contexts/MaterialUITheme/variables";
 
 const useStyles = makeStyles(() => ({
-  content: {
-    display: "flex",
-    flexDirection: "column",
-    alignContent: "center",
-    alignItems: "center",
-    minWidth: 300,
-    minHeight: 170,
-  },
-  buttonBox: {
-    marginTop: "2rem",
-    display: "flex",
+  root: {
     width: "100%",
-    gap: "1rem",
-    flexDirection: "column",
-  },
-  modalContent: {
+    minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    top: 0,
+    background: variables.blackBackground,
+  },
+  content: {
+    minHeight: "100vh",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  header: {
     justifyContent: "space-between",
-    filter: `drop-shadow(0 0px 4px ${variables.primary})`,
-    padding: "2rem",
-    minWidth: 300,
-    minHeight: 200,
-    borderRadius: "12px",
-    background: variables.defaultBackground,
-    "& h4": {
-      textAlign: "center",
+    alignItems: "center",
+    display: "flex",
+    margin: "1rem",
+    color: variables.white,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
     },
   },
 }));
