@@ -27,7 +27,7 @@ const useJoinRoom = (name: string) => {
     if (openJoinModal) {
       handleConnect();
     }
-  }, [openJoinModal, handleConnect]);
+  }, [openJoinModal]);
 
   const iterateJoinModal = () => {
     setOpenJoinModal((prev) => !prev);
