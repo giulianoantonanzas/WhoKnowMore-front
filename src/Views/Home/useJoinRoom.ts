@@ -15,15 +15,19 @@ const useJoinRoom = (name: string) => {
   const [roomCode, setRoomCode] = useState<string>();
   const [error, setError] = useState<string>();
   const { handleConnect, sendEvent, event } = useSocket();
-  const { handleAddPlayerInvite, handleAddPlayerCreator, handleSetRoomCode } =
-    useGame();
+  const {
+    handleAddPlayerInvite,
+    handleAddPlayerCreator,
+    handleSetRoomCode,
+    userId,
+  } = useGame();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (openJoinModal) {
       handleConnect();
     }
-  }, [openJoinModal]);
+  }, [openJoinModal, handleConnect]);
 
   const iterateJoinModal = () => {
     setOpenJoinModal((prev) => !prev);
@@ -50,7 +54,13 @@ const useJoinRoom = (name: string) => {
       }
       setLoadingJoinRoom(false);
     }
-  }, [event]);
+  }, [
+    event,
+    navigate,
+    handleAddPlayerInvite,
+    handleAddPlayerCreator,
+    handleSetRoomCode,
+  ]);
 
   const submit = () => {
     setError(undefined);
@@ -60,6 +70,7 @@ const useJoinRoom = (name: string) => {
         action: "JoinRoom",
         roomCode,
         name,
+        userId,
       })
     );
   };

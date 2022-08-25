@@ -1,4 +1,11 @@
-type EventName = "JoinRoom" | "CreateRoom" | "MemberJoin";
+type EventName =
+  | "JoinRoom"
+  | "CreateRoom"
+  | "Disconect"
+  | "PlayerJoin"
+  | "GetSuggeredQuestions"
+  | "PlayerReady";
+
 type EventResult = "failed" | "success";
 
 class WhoKnowMoreEvent {

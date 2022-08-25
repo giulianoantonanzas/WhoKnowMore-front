@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Player } from "Types/Player";
 
 export type GameContextType = {
@@ -8,6 +8,7 @@ export type GameContextType = {
   handleAddPlayerCreator: (player: Player) => void;
   handleAddPlayerInvite: (player: Player) => void;
   handleSetRoomCode: (roomCode: string) => void;
+  userId: string;
 };
 
 const useGame = () => {
@@ -21,6 +22,7 @@ export const GameContext = React.createContext<GameContextType>({
   handleAddPlayerCreator: (_player: Player) => {},
   handleAddPlayerInvite: (_player: Player) => {},
   handleSetRoomCode: (_roomCode: string) => {},
+  userId: "",
 });
 
 export const GameContextProvider: React.FC<{
@@ -35,7 +37,7 @@ export const GameContextProvider: React.FC<{
     selected: false,
   });
   const [roomCode, setRoomCode] = useState("");
-
+  const userIdGenerated = useRef(crypto.randomUUID());
   const handleAddPlayerCreator = (data: Player) => {
     setPlayerCreator(data);
   };
@@ -56,6 +58,7 @@ export const GameContextProvider: React.FC<{
         handleAddPlayerCreator,
         handleAddPlayerInvite,
         roomCode,
+        userId: userIdGenerated.current,
         handleSetRoomCode,
       }}
     >

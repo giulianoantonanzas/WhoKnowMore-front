@@ -18,8 +18,12 @@ const useCreateRoom = (name: string) => {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const { handleDisconect, handleConnect, event, sendEvent, isConnected } =
     useSocket();
-  const { handleAddPlayerCreator, handleAddPlayerInvite, handleSetRoomCode } =
-    useGame();
+  const {
+    handleAddPlayerCreator,
+    handleAddPlayerInvite,
+    handleSetRoomCode,
+    userId,
+  } = useGame();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,6 +41,7 @@ const useCreateRoom = (name: string) => {
         JSON.stringify({
           action: "CreateRoom",
           name,
+          userId,
         })
       );
     }
@@ -48,7 +53,7 @@ const useCreateRoom = (name: string) => {
       setLoadingCreateRoom(false);
       handleSetRoomCode(currentEvent.roomId);
       setRoomCode(currentEvent.roomId);
-    } else if (event?.eventName === "MemberJoin") {
+    } else if (event?.eventName === "PlayerJoin") {
       const currentEvent = event.data as MemerJoin;
       handleAddPlayerCreator({ name, selected: true });
       handleAddPlayerInvite({
