@@ -2,6 +2,7 @@ import {
   Button,
   CircularProgress,
   Dialog,
+  FormHelperText,
   Skeleton,
   TextField,
   Typography,
@@ -68,10 +69,19 @@ const Home = () => {
       <Dialog open={openCreateModal} onClose={iterateCreateModal}>
         <Box className={style.modalContent}>
           <Typography variant="h4">Room Created</Typography>
-          <Typography display={"flex"} gap={"1rem"}>
-            Code: {loadingCreateRoom && <Skeleton width={"100%"} />}
+          <Typography
+            textAlign={"center"}
+            justifyContent={"center"}
+            display={"flex"}
+            gap={"1rem"}
+          >
+            Code: {loadingCreateRoom && <Skeleton width={"48%"} />}
             {roomCode}
           </Typography>
+
+          <FormHelperText sx={{ textAlign: "center" }} error={true}>
+            {roomCode ? "Esperando a que se unan a la partida..." : ""}
+          </FormHelperText>
 
           <Button
             onClick={iterateCreateModal}

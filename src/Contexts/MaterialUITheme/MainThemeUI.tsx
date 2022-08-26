@@ -51,6 +51,7 @@ export const theme = createTheme({
           },
           "& input": {
             background: variables.white,
+            padding: "0.4rem",
           },
         },
       },

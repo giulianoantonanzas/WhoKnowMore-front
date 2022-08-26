@@ -1,7 +1,6 @@
 import useGame from "Contexts/GameContext";
 import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 type JoinRoomEvent = {
   creatorName: string;
@@ -20,8 +19,8 @@ const useJoinRoom = (name: string) => {
     handleAddPlayerCreator,
     handleSetRoomCode,
     userId,
+    handleChangeRoute,
   } = useGame();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (openJoinModal) {
@@ -48,19 +47,13 @@ const useJoinRoom = (name: string) => {
           name: currentEvent.creatorName,
           selected: false,
         });
-        navigate("/questions");
+        handleChangeRoute("/questions");
       } else {
         setError(event.data.message as string);
       }
       setLoadingJoinRoom(false);
     }
-  }, [
-    event,
-    navigate,
-    handleAddPlayerInvite,
-    handleAddPlayerCreator,
-    handleSetRoomCode,
-  ]);
+  }, [event, handleAddPlayerInvite, handleAddPlayerCreator, handleSetRoomCode]);
 
   const submit = () => {
     setError(undefined);

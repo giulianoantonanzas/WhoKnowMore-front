@@ -5,5 +5,6 @@ export default {
   error: "#FA5050",
   lightDark: "#615A5A",
   white: "#ffffff",
+  success: "84E76B",
   defaultBackground: "#F8E9FF",
 };

@@ -6,11 +6,11 @@ import useStyles from "./useStyles";
 
 const GameLyout = () => {
   const styles = useStyles();
-  const { roomCode } = useGame();
+  const { roomCode, isRerouting } = useGame();
 
   return (
     <Box className={styles.root}>
-      <Fade timeout={1000} in={true}>
+      <Fade timeout={1000} in={!isRerouting}>
         <Box className={styles.content}>
           <Box className={styles.header}>
             <Typography variant="h5">Who knows more</Typography>

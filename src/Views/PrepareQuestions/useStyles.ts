@@ -35,12 +35,17 @@ const useStyles = makeStyles(() => ({
     },
   },
   createdQuestions: {
-    height: "100%",
+    margin: "1rem 0",
     padding: "0",
-    minHeight: "20vh",
+    gap: "1rem",
     display: "flex",
     flexDirection: "column",
     width: "100%",
+    "&>div": {
+      display: "flex",
+      gap: "1rem",
+      justifyContent: "space-between",
+    },
   },
   playersStatus: {
     display: "flex",
@@ -49,6 +54,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "self-end",
     position: "relative",
     "&>div": {
+      minWidth: "300px",
       padding: "1rem",
       transform: "translateX(2.4rem) translateY(2.5rem)",
       [theme.breakpoints.down("sm")]: {

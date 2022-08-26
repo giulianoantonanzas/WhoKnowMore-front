@@ -6,11 +6,9 @@ import { MainThemeUI } from "./Contexts/MaterialUITheme/MainThemeUI";
 const App = () => {
   return (
     <MainThemeUI>
-      <GameContextProvider>
-        <SocketContextProvider>
-          <RootNavigator />
-        </SocketContextProvider>
-      </GameContextProvider>
+      <SocketContextProvider>
+        <RootNavigator />
+      </SocketContextProvider>
     </MainThemeUI>
   );
 };

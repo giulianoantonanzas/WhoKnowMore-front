@@ -7,21 +7,32 @@ type ReadyEvent = {
   message: string;
 };
 
+type Question = {
+  title: string;
+  answers?: {
+    title: string;
+    isCorrect: boolean;
+  }[];
+};
+
 const usePreparateQuestions = () => {
   const { sendEvent, event } = useSocket();
-  const { playerCreator, playerInvited, roomCode, userId } = useGame();
+  const { playerCreator, roomCode, userId } = useGame();
   const [creatorIsReady, setCreatorIsReady] = useState(false);
   const [invitedIsReady, setInvitedIsReady] = useState(false);
   const [loadingSuggeredQuestions, setLoadingSuggeredQuestions] =
     useState<boolean>();
+  const [myQuestions, setMyQuestions] = useState<Question[]>([]);
   const [suggeredQuestions, setSuggeredQuestions] = useState<string[]>();
 
   useEffect(() => {
     if (event?.eventName === "GetSuggeredQuestions") {
+      /**Obtengo las preguntas sugeridas */
       const currentEvent = event.data as { suggeredQuestions: string[] };
       setLoadingSuggeredQuestions(false);
       setSuggeredQuestions(currentEvent.suggeredQuestions);
     } else if (event?.eventName === "PlayerReady") {
+      /**Detecto el evento de Player Ready */
       const currentEvent = event.data as ReadyEvent;
       if (currentEvent.playerReady === "creator") {
         setCreatorIsReady(true);
@@ -30,6 +41,10 @@ const usePreparateQuestions = () => {
       }
     }
   }, [event]);
+
+  const handleAddQuestion = (question: string) => {
+    setMyQuestions((prev) => [...prev, { title: question }]);
+  };
 
   const handleSetReady = () => {
     if (playerCreator.selected) {
@@ -62,6 +77,8 @@ const usePreparateQuestions = () => {
     handleSetReady,
     suggeredQuestions,
     loadingSuggeredQuestions,
+    handleAddQuestion,
+    myQuestions,
   };
 };
 

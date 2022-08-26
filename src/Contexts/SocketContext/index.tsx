@@ -25,18 +25,18 @@ export const SocketContextProvider: React.FC<{
   const [webSocket, setSocket] = useState<WebSocket>();
   const [isConnected, setIsConnected] = useState(false);
   const [event, setEvent] = useState<WhoKnowMoreEvent>();
-  const [hasInitialice, setHasInitialice] = useState(false);
 
-  const handleConnect = () => {
+  const handleConnect = useCallback(() => {
     setSocket(
       new WebSocket("wss://xv54lcahc9.execute-api.us-east-1.amazonaws.com/dev")
     );
-    setHasInitialice(true);
-  };
+  }, []);
 
   const handleDisconect = () => {
     if (webSocket) {
       webSocket.send(JSON.stringify({ action: "$disconnect" }));
+      setSocket(undefined);
+      setIsConnected(false);
     }
   };
 
@@ -58,7 +58,7 @@ export const SocketContextProvider: React.FC<{
         console.log("on close", e);
       };
     }
-  }, [webSocket, hasInitialice]);
+  }, [webSocket]);
 
   const sendEvent = useCallback(
     (data: string) => {

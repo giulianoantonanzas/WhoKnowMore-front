@@ -1,7 +1,6 @@
 import useGame from "Contexts/GameContext";
 import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 type CreateRoomEvent = {
   roomId: string;
@@ -23,13 +22,14 @@ const useCreateRoom = (name: string) => {
     handleAddPlayerInvite,
     handleSetRoomCode,
     userId,
+    handleChangeRoute,
   } = useGame();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (openCreateModal) {
       handleConnect();
     } else {
+      setRoomCode("");
       handleDisconect();
     }
   }, [openCreateModal]);
@@ -60,7 +60,7 @@ const useCreateRoom = (name: string) => {
         name: currentEvent.invitedName,
         selected: false,
       });
-      navigate("/questions");
+      handleChangeRoute("/questions");
     }
   }, [event]);
 
