@@ -5,8 +5,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "Views/Home";
 import PrepareQuestions from "Views/PrepareQuestions";
 import { GameContextProvider } from "Contexts/GameContext";
+import GamePlay from "Views/GamePlay";
 
-const RootNavigator: React.FC = () => {
+const RouteManager: React.FC = () => {
   return (
     <BrowserRouter>
       <GameContextProvider>
@@ -16,6 +17,7 @@ const RootNavigator: React.FC = () => {
           </Route>
           <Route element={<GameLyout />}>
             <Route path="/questions" element={<PrepareQuestions />} />
+            <Route path="/game-play" element={<GamePlay />} />
           </Route>
         </Routes>
       </GameContextProvider>
@@ -23,4 +25,4 @@ const RootNavigator: React.FC = () => {
   );
 };
 
-export default RootNavigator;
+export default RouteManager;

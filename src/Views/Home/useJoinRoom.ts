@@ -58,14 +58,12 @@ const useJoinRoom = (name: string) => {
   const submit = () => {
     setError(undefined);
     setLoadingJoinRoom(true);
-    sendEvent(
-      JSON.stringify({
-        action: "JoinRoom",
-        roomCode,
-        name,
-        userId,
-      })
-    );
+    sendEvent({
+      action: "JoinRoom",
+      roomCode,
+      name,
+      userId,
+    });
   };
 
   return {

@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import WhoKnowMoreEvent from "Types/WhoKnowMoreEvent";
 
-export type SocketContext = {
+export type SocketContextType = {
   handleConnect: () => void;
-  sendEvent: (data: string) => void;
+  sendEvent: (data: unknown) => void;
   event?: WhoKnowMoreEvent;
   isConnected: boolean;
   handleDisconect: () => void;
@@ -12,9 +12,9 @@ const useSocket = () => {
   return useContext(SocketContext);
 };
 
-export const SocketContext = React.createContext<SocketContext>({
+export const SocketContext = React.createContext<SocketContextType>({
   handleConnect: () => {},
-  sendEvent: (_data: string) => {},
+  sendEvent: (_data: unknown) => {},
   isConnected: false,
   handleDisconect: () => {},
 });
@@ -28,7 +28,7 @@ export const SocketContextProvider: React.FC<{
 
   const handleConnect = useCallback(() => {
     setSocket(
-      new WebSocket("wss://xv54lcahc9.execute-api.us-east-1.amazonaws.com/dev")
+      new WebSocket("wss://mu7upukrmc.execute-api.us-east-1.amazonaws.com/dev")
     );
   }, []);
 
@@ -61,9 +61,9 @@ export const SocketContextProvider: React.FC<{
   }, [webSocket]);
 
   const sendEvent = useCallback(
-    (data: string) => {
+    (data: unknown) => {
       if (webSocket) {
-        webSocket.send(data);
+        webSocket.send(JSON.stringify(data));
       }
     },
     [webSocket]

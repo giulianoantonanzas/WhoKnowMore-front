@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
 import { theme } from "Contexts/MaterialUITheme/MainThemeUI";
-import variables from "Contexts/MaterialUITheme/variables";
 
 const useStyles = makeStyles(() => ({
   content: {

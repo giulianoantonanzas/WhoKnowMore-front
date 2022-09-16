@@ -37,13 +37,11 @@ const useCreateRoom = (name: string) => {
   useEffect(() => {
     if (isConnected) {
       setLoadingCreateRoom(true);
-      sendEvent(
-        JSON.stringify({
-          action: "CreateRoom",
-          name,
-          userId,
-        })
-      );
+      sendEvent({
+        action: "CreateRoom",
+        name,
+        userId,
+      });
     }
   }, [isConnected]);
 

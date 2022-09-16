@@ -47,12 +47,10 @@ const usePreparateQuestions = () => {
 
   useEffect(() => {
     setLoadingSuggeredQuestions(true);
-    sendEvent(
-      JSON.stringify({
-        action: "GetSuggeredQuestions",
-        roomCode,
-      })
-    );
+    sendEvent({
+      action: "GetSuggeredQuestions",
+      roomCode,
+    });
   }, [roomCode, sendEvent]);
 
   const handleChangeQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +116,7 @@ const usePreparateQuestions = () => {
 
   const handleSetReady = () => {
     if (myQuestions.length < 3) {
-      alert("ingresa al menos 3 preguntas");
+      return alert("ingresa al menos 3 preguntas");
     }
     if (playerCreator.selected) {
       setCreatorIsReady(true);
@@ -126,14 +124,12 @@ const usePreparateQuestions = () => {
       setInvitedIsReady(true);
     }
 
-    sendEvent(
-      JSON.stringify({
-        action: "SetReady",
-        roomCode,
-        userId,
-        myQuestions,
-      })
-    );
+    sendEvent({
+      action: "SetReady",
+      roomCode,
+      userId,
+      myQuestions,
+    });
   };
 
   return {
