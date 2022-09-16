@@ -6,6 +6,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import usePreparateQuestions from "./usePreparateQuestions";
 import usestyles from "./useStyles";
 
+/**
+ * @warning necesita una buena refactorizada...
+ * */
 const PrepareQuestions = () => {
   const styles = usestyles();
   const {
@@ -16,6 +19,17 @@ const PrepareQuestions = () => {
     suggeredQuestions,
     handleAddQuestion,
     myQuestions,
+    handleChangeQuestion,
+    handleSubmitQuestion,
+    questionInput,
+    handleRemoveQuestion,
+    handleChangeAnswer,
+    handleChangeIsCorrectAnswer,
+    handleSelectQuetion,
+    handleSubmitAnswer,
+    answerInput,
+    indexSelectedQuestion,
+    handleRemoveAnswer,
   } = usePreparateQuestions();
 
   return (
@@ -27,7 +41,7 @@ const PrepareQuestions = () => {
         <Box
           display={"flex"}
           flexDirection={"column"}
-          width={"90%"}
+          width={"100%"}
           my={2}
           gap={"1rem"}
         >
@@ -71,19 +85,46 @@ const PrepareQuestions = () => {
         >
           <Box>
             <Typography variant="h5">Preguntas en juego</Typography>
-            <Box display={"flex"} justifyContent={"space-between"} gap={2}>
-              <TextField type={"text"} />
-              <Button color={"success"} variant={"contained"}>
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              width={"100%"}
+              gap={2}
+            >
+              <TextField
+                onChange={handleChangeQuestion}
+                placeholder="Ingrese una pregunta"
+                value={questionInput}
+                type={"text"}
+              />
+              <Button
+                onClick={handleSubmitQuestion}
+                color={"success"}
+                variant={"contained"}
+              >
                 <CheckIcon />
               </Button>
             </Box>
             <Box className={styles.createdQuestions}>
               {myQuestions.map((question, index) => (
-                <Box display={"flex"}>
-                  <Button variant="contained" color="primary" key={index}>
+                <Box display={"flex"} key={index}>
+                  <Button
+                    onClick={() => handleSelectQuetion(index)}
+                    variant={
+                      indexSelectedQuestion === index ? "contained" : "outlined"
+                    }
+                    color="primary"
+                    key={index}
+                  >
                     {question.title}
                   </Button>
-                  <Button variant="contained" color="error">
+                  <Button
+                    onClick={() => {
+                      handleRemoveQuestion(index);
+                    }}
+                    variant="contained"
+                    color="error"
+                  >
                     <DeleteIcon />
                   </Button>
                 </Box>
@@ -92,6 +133,51 @@ const PrepareQuestions = () => {
           </Box>
           <Box>
             <Typography variant={"h5"}>Respuestas</Typography>
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              width={"100%"}
+              gap={2}
+            >
+              <TextField
+                onChange={handleChangeAnswer}
+                placeholder="La milanesa"
+                value={answerInput}
+                type={"text"}
+              />
+              <Button
+                onClick={handleSubmitAnswer}
+                color={"success"}
+                variant={"contained"}
+              >
+                <CheckIcon />
+              </Button>
+            </Box>
+            <Box className={styles.createdQuestions}>
+              {myQuestions?.[indexSelectedQuestion]?.answers?.map(
+                (answer, index) => (
+                  <Box display={"flex"} key={index}>
+                    <Button
+                      onClick={() => handleChangeIsCorrectAnswer(index)}
+                      variant="contained"
+                      color={answer.isCorrect ? "success" : "error"}
+                      key={index}
+                    >
+                      {answer?.title}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleRemoveAnswer(index);
+                      }}
+                      variant="contained"
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Box>
+                )
+              )}
+            </Box>
           </Box>
         </Box>
 

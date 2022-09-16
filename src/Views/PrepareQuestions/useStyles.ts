@@ -54,6 +54,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "self-end",
     position: "relative",
     "&>div": {
+      minHeight: "60px",
       minWidth: "300px",
       padding: "1rem",
       transform: "translateX(2.4rem) translateY(2.5rem)",
@@ -61,8 +62,8 @@ const useStyles = makeStyles(() => ({
         transform: "translateX(1rem) translateY(1rem)",
       },
       borderRadius: "8px",
-      color: variables.white,
-      background: "#5A2D2D",
+      color: theme.palette.primary.main,
+      border: `solid 1px ${theme.palette.primary.main}`,
       position: "absolute",
     },
   },
