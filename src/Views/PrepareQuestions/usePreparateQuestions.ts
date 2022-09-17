@@ -1,23 +1,16 @@
 import useGame from "Contexts/GameContext";
 import useSocket from "Contexts/SocketContext";
 import { useEffect, useState } from "react";
+import Question from "Types/Question";
 
 type ReadyEvent = {
   playerReady: "invited" | "creator";
   message: string;
 };
 
-type Question = {
-  title: string;
-  answers?: {
-    title: string;
-    isCorrect: boolean;
-  }[];
-};
-
 const usePreparateQuestions = () => {
   const { sendEvent, event } = useSocket();
-  const { playerCreator, roomCode, userId } = useGame();
+  const { playerCreator, handleChangeRoute, roomCode, userId } = useGame();
   const [creatorIsReady, setCreatorIsReady] = useState(false);
   const [invitedIsReady, setInvitedIsReady] = useState(false);
   const [loadingSuggeredQuestions, setLoadingSuggeredQuestions] =
@@ -113,6 +106,12 @@ const usePreparateQuestions = () => {
       return [...prev];
     });
   };
+
+  useEffect(() => {
+    if (creatorIsReady && invitedIsReady) {
+      handleChangeRoute("/game-play");
+    }
+  }, [creatorIsReady, invitedIsReady]);
 
   const handleSetReady = () => {
     if (myQuestions.length < 3) {

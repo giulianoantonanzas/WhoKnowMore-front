@@ -11,14 +11,18 @@ const useStyles = makeStyles(() => ({
     [theme.breakpoints.down("sm")]: {
       display: "block",
     },
+    "& input": {
+      padding: "8px",
+    },
   },
   suggestedQuestions: {
     width: "100%",
     height: "67vh",
     margin: "1rem 0",
+    minHeight: "35vh",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
-      minHeight: "20vh",
+
       width: "unset",
       height: "unset",
     },
@@ -27,10 +31,18 @@ const useStyles = makeStyles(() => ({
     minWidth: "58%",
     height: "67vh",
     margin: "1rem 0",
+    minHeight: "35vh",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
       width: "unset",
       height: "unset",
+    },
+    "&>div": {
+      gap: "1rem",
+      display: "flex",
+      [theme.breakpoints.down("sm")]: {
+        minHeight: "35vh",
+      },
     },
   },
   createdQuestions: {

@@ -84,7 +84,7 @@ const PrepareQuestions = () => {
           width={"100%"}
         >
           <Box>
-            <Typography variant="h5">Preguntas en juego</Typography>
+            <Typography variant="h5">Preguntas</Typography>
             <Box
               display={"flex"}
               justifyContent={"space-between"}

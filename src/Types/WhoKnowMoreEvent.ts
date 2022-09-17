@@ -4,23 +4,16 @@ type EventName =
   | "Disconect"
   | "PlayerJoin"
   | "GetSuggeredQuestions"
-  | "PlayerReady";
+  | "GetEnemyQuestions"
+  | "PlayerReady"
+  | "GameResult";
 
 type EventResult = "failed" | "success";
 
-class WhoKnowMoreEvent {
+type WhoKnowMoreEvent = {
   eventName: EventName;
   eventResult: EventResult;
   data: Record<string, unknown>;
-  constructor(option: {
-    eventName: EventName;
-    eventResult: EventResult;
-    data: Record<string, unknown>;
-  }) {
-    this.eventName = option.eventName;
-    this.eventResult = option.eventResult;
-    this.data = option.data;
-  }
-}
+};
 
 export default WhoKnowMoreEvent;
